@@ -4,7 +4,7 @@
   "description": "General Roldevs bot for Discord and Telegram",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha 'specs/**/*.spec.js'"
   },
   "repository": {
     "type": "git",
@@ -23,5 +23,17 @@
   "bugs": {
     "url": "https://github.com/roldevs/roldevs_bot/issues"
   },
-  "homepage": "https://github.com/roldevs/roldevs_bot#readme"
+  "homepage": "https://github.com/roldevs/roldevs_bot#readme",
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "flyd": "^0.2.8",
+    "ramda": "^0.27.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.2.0"
+  }
 }
