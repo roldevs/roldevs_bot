@@ -4,9 +4,9 @@ const R = require('ramda');
 
 // ** dices
 // ** sides
-const Dice = (options) => {
-  const randomNumber = () => Math.floor(Math.random() * options.sides) + 1;
-  const roll = () => R.times(randomNumber, options.dices);
+const Dice = () => {
+  const _randomNumber = (sides) => () => Math.floor(Math.random() * sides) + 1;
+  const roll = ({ dices, sides }) => R.times(_randomNumber(sides), dices);
 
   return {
     roll,
