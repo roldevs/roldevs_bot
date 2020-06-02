@@ -17,9 +17,11 @@ const {
   ApocalypseRandomEventCommand,
 } = require('./commands');
 const ApplicationBase = require('../base');
+const localeDefinitions = require('./locales');
 
 const ApocalypseOracle = ApplicationBase({
   appName: 'ao',
+  localeDefinitions,
   commands: [
     ApocalypseQuestionLikelyCommand,
     ApocalypseQuestionNormalCommand,

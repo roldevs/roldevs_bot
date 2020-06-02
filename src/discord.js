@@ -9,14 +9,14 @@ const discord = require('discord.js');
 // ** token
 const Discord = ({logger, broker, prefix, token}) => {
   const client = new discord.Client();
-  const args = Args({ prefix });
+  const args = Args({prefix});
 
   const _logInfo = logger.info;
 
   const _payload = (message) => R.merge({
-      system: 'discord',
-      sender: client,
-      message: message,
+    system: 'discord',
+    sender: client,
+    message: message,
   }, args.payload(message.content));
 
   client.on('ready', () => _logInfo('Discord ready'));

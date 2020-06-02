@@ -1,6 +1,6 @@
 'use strict';
 
-const Logger = ({ logger$ }) => {
+const Logger = ({logger$}) => {
   const info = (message) => logger$({
     type: 'info',
     message,

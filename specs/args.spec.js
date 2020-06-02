@@ -1,4 +1,4 @@
-const { expect } = require('chai');
+const {expect} = require('chai');
 const Args = require('../src/args');
 
 describe('Args', () => {
@@ -34,7 +34,7 @@ describe('Args', () => {
       expect(args.payload('+ao opp').command).to.eql('opp');
     });
     it('return de op code', () => {
-      const args = Args({ prefix: '-' });
+      const args = Args({prefix: '-'});
       expect(args.payload('-ao opp').command).to.eql('opp');
     });
     it('return de op code', () => {
@@ -52,7 +52,7 @@ describe('Args', () => {
       expect(args.payload('+ao opp 1').args).to.eql(['1']);
     });
     it('return the args', () => {
-      const args = Args({ prefix: '-' });
+      const args = Args({prefix: '-'});
       expect(args.payload('-ao opp 1 2').args).to.eql(['1', '2']);
     });
     it('return the args', () => {

@@ -6,7 +6,7 @@ const R = require('ramda');
 // ** sides
 const Dice = () => {
   const _randomNumber = (sides) => () => Math.floor(Math.random() * sides) + 1;
-  const roll = ({ dices, sides }) => R.times(_randomNumber(sides), dices);
+  const roll = ({dices, sides}) => R.times(_randomNumber(sides), dices);
 
   return {
     roll,

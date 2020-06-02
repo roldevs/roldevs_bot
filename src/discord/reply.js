@@ -3,25 +3,17 @@
 const R = require('ramda');
 
 const DicordReply = () => {
-  const _question = R.compose(R.defaultTo(''), R.nth(0), R.prop('args'));
-  const _description = R.compose(R.defaultTo(''), R.view(R.lensPath(['reply','description'])));
-  const _eachReply = R.compose(R.defaultTo(''), R.prop('key'));
-  const _reply = R.compose(R.join(', '), R.map(_eachReply), R.prop('reply'));
-  const _rolls = R.compose(R.join(', '), R.map(R.prop('roll')), R.prop('reply'));
+  const _question = R.compose(R.last, R.prop('args'));
+  const _description = R.prop('description');
+  const _text = R.prop('text');
 
-  const _message = (payload) => {
-    return `${_reply(payload)} (${_rolls(payload)})`;
-  };
+  const _header = (payload) => `_${_question(payload)}_`;
+  const _reply = (reply) => `> **${_description(reply)}**: ${_text(reply)}\u200B`;
 
   const reply = (payload) => {
-    if (!payload.reply) {
-      return;
-    }
-    const msg = [];
-    msg.push(`**${_description(payload)}:** ${_question(payload)}`);
-    R.forEach((reply) => {
-      msg.push(`> ${R.prop('cmd', reply)}: ${R.prop('key', reply)}\u200B`);
-    }, payload.reply);
+    if (!payload.reply) return;
+    const msg = [_header(payload)];
+    R.forEach((reply) => msg.push(_reply(reply)), payload.reply);
     payload.message.channel.send(R.join('\n', msg));
   };
 

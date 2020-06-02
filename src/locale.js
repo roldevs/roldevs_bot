@@ -2,13 +2,17 @@
 
 const R = require('ramda');
 
-const Locale = ({ language }) => (definitions) => {
-  const t = (payload) => (key) => {
-    return R.view(R.lensPath([language, payload.command, key]), definitions);
+const Locale = ({language, applicationFinder}) => {
+  const translate = (payload) => {
+    return R.set(
+        R.lensProp('reply'),
+        applicationFinder.getApp(payload).translate(language, payload.reply),
+        payload,
+    );
   };
 
   return {
-    t,
+    translate,
   };
 };
 

@@ -46,11 +46,11 @@ describe('ApocalypseOracle', () => {
           afterEach(sandbox.restore);
           it(`returns: ${answer}`, () => {
             const subject = AO.execute({ app: 'ao', command: 'qu' });
-            expect(subject[0]).to.eql({cmd: 'qu', key: answer, roll: index + 1});
+            expect(subject[0]).to.eql({ app: 'ao', cmd: 'qu', key: answer, roll: index + 1 });
           });
         });
 
-        const qualifier = index === 0 ? 'but' : index === 5 ? 'and' : undefined;
+        const qualifier = index === 0 ? 'no_but' : index === 5 ? 'no_and' : 'no';
         describe(`roll qualifier: ${index + 1}`, () => {
           beforeEach(() => {
             const stub = sandbox.stub(dice, 'roll');
@@ -60,11 +60,7 @@ describe('ApocalypseOracle', () => {
           afterEach(sandbox.restore);
           it(`returns: ${qualifier}`, () => {
             const subject = AO.execute({ app: 'ao', command: 'qu' });
-            if(qualifier) {
-              expect(subject[1]).to.eql({cmd: 'qu', key: qualifier, roll: index + 1});
-            } else {
-              expect(subject[1]).to.be.undefined;
-            }
+            expect(subject[0]).to.eql({ app: 'ao', cmd: 'qu', key: qualifier, roll: 1 });
           });
         });
       }, 6);
@@ -82,11 +78,11 @@ describe('ApocalypseOracle', () => {
           afterEach(sandbox.restore);
           it(`returns: ${answer}`, () => {
             const subject = AO.execute({ app: 'ao', command: 'qn' });
-            expect(subject[0]).to.eql({cmd: 'qn', key: answer, roll: index + 1});
+            expect(subject[0]).to.eql({ app: 'ao', cmd: 'qn', key: answer, roll: index + 1 });
           });
         });
 
-        const qualifier = index === 0 ? 'but' : index === 5 ? 'and' : undefined;
+        const qualifier = index === 0 ? 'no_but' : index === 5 ? 'no_and' : 'no';
         describe(`roll qualifier: ${index + 1}`, () => {
           beforeEach(() => {
             const stub = sandbox.stub(dice, 'roll');
@@ -96,11 +92,7 @@ describe('ApocalypseOracle', () => {
           afterEach(sandbox.restore);
           it(`returns: ${qualifier}`, () => {
             const subject = AO.execute({ app: 'ao', command: 'qn' });
-            if(qualifier) {
-              expect(subject[1]).to.eql({cmd: 'qn', key: qualifier, roll: index + 1});
-            } else {
-              expect(subject[1]).to.be.undefined;
-            }
+            expect(subject[0]).to.eql({ app: 'ao', cmd: 'qn', key: qualifier, roll: 1 });
           });
         });
       }, 6);
@@ -118,11 +110,11 @@ describe('ApocalypseOracle', () => {
           afterEach(sandbox.restore);
           it(`returns: ${answer}`, () => {
             const subject = AO.execute({ app: 'ao', command: 'ql' });
-            expect(subject[0]).to.eql({cmd: 'ql', key: answer, roll: index + 1});
+            expect(subject[0]).to.eql({ app: 'ao', cmd: 'ql', key: answer, roll: index + 1 });
           });
         });
 
-        const qualifier = index === 0 ? 'but' : index === 5 ? 'and' : undefined;
+        const qualifier = index === 0 ? 'no_but' : index === 5 ? 'no_and' : 'no';
         describe(`roll qualifier: ${index + 1}`, () => {
           beforeEach(() => {
             const stub = sandbox.stub(dice, 'roll');
@@ -132,11 +124,7 @@ describe('ApocalypseOracle', () => {
           afterEach(sandbox.restore);
           it(`returns: ${qualifier}`, () => {
             const subject = AO.execute({ app: 'ao', command: 'ql' });
-            if(qualifier) {
-              expect(subject[1]).to.eql({cmd: 'ql', key: qualifier, roll: index + 1});
-            } else {
-              expect(subject[1]).to.be.undefined;
-            }
+            expect(subject[0]).to.eql({ app: 'ao', cmd: 'ql', key: qualifier, roll: 1 });
           });
         });
       }, 6);
@@ -149,7 +137,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         const subject = AO.execute({ app: 'ao', command: 'sc' });
-        expect(subject).to.eql([{cmd: 'sc', key: value, roll: index + 1}]);
+        expect(subject).to.eql([{ app: 'ao', cmd: 'sc', key: value, roll: index + 1 }]);
       });
     }, ApocalypseOracleValues.sc);
   });
@@ -160,7 +148,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         const subject = AO.execute({ app: 'ao', command: 'sa' });
-        expect(subject[0]).to.eql({cmd: 'sa', key: value, roll: index + 1});
+        expect(subject[0]).to.eql({ app: 'ao', cmd: 'sa', key: value, roll: index + 1 });
       });
     }, ApocalypseOracleValues.sa);
 
@@ -175,8 +163,8 @@ describe('ApocalypseOracle', () => {
         const AO = ApocalypseOracle({ dice, locale });
         const subject = AO.execute({ app: 'ao', command: 'sa' });
         expect(subject).to.eql([
-          {cmd: 'sa', key: ApocalypseOracleValues.sa[3], roll: 4},
-          {cmd: 'sc', key: ApocalypseOracleValues.sc[0], roll: 1},
+          { app: 'ao', cmd: 'sa', key: ApocalypseOracleValues.sa[3], roll: 4 },
+          { app: 'ao', cmd: 'sc', key: ApocalypseOracleValues.sc[0], roll: 1 },
         ])
       });
     });
@@ -193,9 +181,9 @@ describe('ApocalypseOracle', () => {
         const AO = ApocalypseOracle({ dice, locale });
         const subject = AO.execute({ app: 'ao', command: 'sa' });
         expect(subject).to.eql([
-          {cmd: 'sa', key: ApocalypseOracleValues.sa[4], roll: 5},
-          {cmd: 'ef', key: ApocalypseOracleValues.ef[0], roll: 1},
-          {cmd: 'aq', key: ApocalypseOracleValues.aq[0], roll: 1},
+          { app: 'ao', cmd: 'sa', key: ApocalypseOracleValues.sa[4], roll: 5 },
+          { app: 'ao', cmd: 'ef', key: ApocalypseOracleValues.ef[0], roll: 1 },
+          { app: 'ao', cmd: 'aq', key: ApocalypseOracleValues.aq[0], roll: 1 },
         ]);
       });
     });
@@ -211,8 +199,8 @@ describe('ApocalypseOracle', () => {
         const AO = ApocalypseOracle({ dice, locale });
         const subject = AO.execute({ app: 'ao', command: 'sa' });
         expect(subject).to.eql([
-          {cmd: 'sa', key: ApocalypseOracleValues.sa[5], roll: 6},
-          {cmd: 'pm', key: ApocalypseOracleValues.pm[0], roll: 1},
+          { app: 'ao', cmd: 'sa', key: ApocalypseOracleValues.sa[5], roll: 6 },
+          { app: 'ao', cmd: 'pm', key: ApocalypseOracleValues.pm[0], roll: 1 },
         ]);
       });
     });
@@ -223,7 +211,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         expect(AO.execute({ app: 'ao', command: 'aq' })).to.eql([
-          {cmd: 'aq', key: value, roll: index + 1},
+          { app: 'ao', cmd: 'aq', key: value, roll: index + 1 },
         ]);
       });
     }, ApocalypseOracleValues.aq);
@@ -234,7 +222,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         expect(AO.execute({ app: 'ao', command: 'pm' })).to.eql([
-          {cmd: 'pm', key: value, roll: index + 1},
+          { app: 'ao', cmd: 'pm', key: value, roll: index + 1 },
         ]);
       });
     }, ApocalypseOracleValues.pm);
@@ -245,7 +233,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         expect(AO.execute({ app: 'ao', command: 'sm' })).to.eql([
-          {cmd: 'sm', key: value, roll: index + 1},
+          { app: 'ao', cmd: 'sm', key: value, roll: index + 1 },
         ]);
       });
     }, ApocalypseOracleValues.sm);
@@ -256,7 +244,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         expect(AO.execute({ app: 'ao', command: 'hm' })).to.eql([
-          {cmd: 'hm', key: value, roll: index + 1},
+          { app: 'ao', cmd: 'hm', key: value, roll: index + 1 },
         ]);
       });
     }, ApocalypseOracleValues.hm);
@@ -267,7 +255,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         expect(AO.execute({ app: 'ao', command: 'nm' })).to.eql([
-          {cmd: 'nm', key: value, roll: index + 1},
+          { app: 'ao', cmd: 'nm', key: value, roll: index + 1 },
         ]);
       });
     }, ApocalypseOracleValues.nm);
@@ -278,7 +266,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         expect(AO.execute({ app: 'ao', command: 'dq' })).to.eql([
-          {cmd: 'dq', key: value, roll: index + 1},
+          { app: 'ao', cmd: 'dq', key: value, roll: index + 1 },
         ]);
       });
     }, ApocalypseOracleValues.dq);
@@ -289,7 +277,7 @@ describe('ApocalypseOracle', () => {
         const dice = TestDice({ value: [index + 1] });
         const AO = ApocalypseOracle({ dice, locale });
         expect(AO.execute({ app: 'ao', command: 'ef' })).to.eql([
-          {cmd: 'ef', key: value, roll: index + 1},
+          { app: 'ao', cmd: 'ef', key: value, roll: index + 1 },
         ]);
       });
     }, ApocalypseOracleValues.ef);
@@ -313,8 +301,8 @@ describe('ApocalypseOracle', () => {
             const AO = ApocalypseOracle({ dice, locale });
             const subject = AO.execute({ app: 'ao', command: 're' })
             expect(subject).to.eql([
-              { cmd: 'ef', key: efValue, roll: efIndex + 1 },
-              { cmd: 'aq', key: aqValue, roll: aqIndex + 1 },
+              { app: 'ao', cmd: 'ef', key: efValue, roll: efIndex + 1 },
+              { app: 'ao', cmd: 'aq', key: aqValue, roll: aqIndex + 1 },
             ]);
           });
         });

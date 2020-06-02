@@ -1,6 +1,6 @@
 'use strict';
 
-const Broker = ({ broker$ }) => {
+const Broker = ({broker$}) => {
   const send = broker$;
 
   return {

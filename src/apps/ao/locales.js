@@ -2,6 +2,33 @@
 
 const Locales = {
   es: {
+    qu: {
+      description: 'Pregunta improbable',
+      yes: 'Sí',
+      no: 'No',
+      yes_but: 'Sí, pero...',
+      yes_and: 'Sí, y...',
+      no_but: 'No, pero...',
+      no_and: 'No, y...',
+    },
+    qn: {
+      description: 'Pregunta normal',
+      yes: 'Sí',
+      no: 'No',
+      yes_but: 'Sí, pero...',
+      yes_and: 'Sí, y...',
+      no_but: 'No, pero...',
+      no_and: 'No, y...',
+    },
+    ql: {
+      description: 'Pregunta probable',
+      yes: 'Sí',
+      no: 'No',
+      yes_but: 'Sí, pero...',
+      yes_and: 'Sí, y...',
+      no_but: 'No, pero...',
+      no_and: 'No, y...',
+    },
     sc: {
       description: 'Complicación de Escena',
       conflict: 'Conflicto',
@@ -26,7 +53,7 @@ const Locales = {
       clubs_fail: 'Fallar - físico, duro, construído',
       clubs_oppose: 'Oponerse - físico, duro, construído',
       clubs_take: 'Coger - físico, duro, construído',
-      clubs_communicate: 'Comunicar - físico, dur, construído',
+      clubs_communicate: 'Comunicar - físico, duro, construído',
       clubs_abandon: 'Abandonar - físico, duro, construíd',
       clubs_move: 'Mover - físico, duro, construído',
       clubs_assist: 'Asistir - físico, duro, consruído',
@@ -35,19 +62,19 @@ const Locales = {
       clubs_create: 'Crear - físico, duro, construído',
       clubs_deceive: 'Engañar - físico, duro, constuído',
       clubs_plan: 'Planificar - físico, duro, construío',
-      diamons_seek: 'Buscar - metal, trama, técnio',
-      diamons_fail: 'Fallar - metal, trama, técnico',
-      diamons_oppose: 'Oponerse - metal, trama, técnico',
-      diamons_take: 'Coger - metal, trama, técnic',
-      diamons_communicate: 'Comunicar - metal, trama,técnico',
-      diamons_abandon: 'Abandonar - metal, trama,técnico',
-      diamons_move: 'Mover - metal, trama, técnico',
-      diamons_assist: 'Asistir - metal, trama, técnco',
-      diamons_harm: 'Dañar - metal, trama, técnico',
-      diamons_change: 'Cambiar - metal, trama, técnico',
-      diamons_create: 'Crear - metal, trama, técnico',
-      diamons_deceive: 'Engañar - metal, trama, técnico',
-      diamons_plan: 'Planificar - metal, trama, técnico',
+      diamonds_seek: 'Buscar - metal, trama, técnio',
+      diamonds_fail: 'Fallar - metal, trama, técnico',
+      diamonds_oppose: 'Oponerse - metal, trama, técnico',
+      diamonds_take: 'Coger - metal, trama, técnic',
+      diamonds_communicate: 'Comunicar - metal, trama,técnico',
+      diamonds_abandon: 'Abandonar - metal, trama,técnico',
+      diamonds_move: 'Mover - metal, trama, técnico',
+      diamonds_assist: 'Asistir - metal, trama, técnco',
+      diamonds_harm: 'Dañar - metal, trama, técnico',
+      diamonds_change: 'Cambiar - metal, trama, técnico',
+      diamonds_create: 'Crear - metal, trama, técnico',
+      diamonds_deceive: 'Engañar - metal, trama, técnico',
+      diamonds_plan: 'Planificar - metal, trama, técnico',
       hearts_seek: 'Buscar - personal, social, emocional',
       hearts_fail: 'Fallar - personal, social, emocional',
       hearts_oppose: 'Oponerse - personal, social, emocional',
@@ -223,15 +250,6 @@ const Locales = {
     re: {
       description: 'Evento aleatorio',
     },
-    qu: {
-      description: 'Pregunta Improbable',
-    },
-    qn: {
-      description: 'Pregunta Normal',
-    },
-    ql: {
-      description: 'Pregunta Probable',
-    }
   },
 };
 

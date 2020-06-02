@@ -1,13 +1,14 @@
 'use strict';
 
 const R = require('ramda');
+const {parse} = require('shell-quote');
 
 const Args = () => {
   const _getApp = R.nth(0);
   const _getCommand = R.nth(1);
 
   // Full args including app and command
-  const _getArgs = (message) => message.split(/ +/);
+  const _getArgs = parse;
 
   const _app = R.compose(_getApp, _getArgs);
   const _command = R.compose(R.defaultTo(null), _getCommand, _getArgs);
@@ -18,7 +19,7 @@ const Args = () => {
       app: _app(message),
       command: _command(message),
       args: _args(message),
-    }
+    };
   };
 
   return {

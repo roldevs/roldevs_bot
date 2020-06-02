@@ -7,7 +7,7 @@ const compact = R.reject(R.isNil);
 const roll =(dice, sides) => dice.roll({ dices: 1, sides })[0];
 
 const _pickFormat = R.curry((cmd, key, roll) => {
-  return { cmd, key, roll };
+  return { app: 'ao', cmd, key, roll };
 });
 
 const ApocalypseBaseCommand = ({ cmd, diceValues }) => ({ dice }) => {
@@ -23,17 +23,22 @@ const ApocalypseBaseCommand = ({ cmd, diceValues }) => ({ dice }) => {
 };
 
 const ApocalypseQuestionCommand = ({ cmd, minValue }) =>  ({ dice }) => {
-  const _pickAnswer = () => {
-    const rollValue = roll(dice, 6);
-    return _pickFormat(cmd, rollValue >= minValue ? 'yes' : 'no', rollValue);
-  };
-  const _pickQualifier = () => {
-    const rollValue = roll(dice, 6);
-    if (rollValue === 1) return _pickFormat(cmd, 'but', rollValue);
-    if (rollValue === 6) return _pickFormat(cmd, 'and', rollValue);
-  };
+  const _isYes = (rollValue) => rollValue >= minValue;
 
-  const pick = () => R.compose(compact)([_pickAnswer(), _pickQualifier()]);
+  const pick = () => {
+    const rollAnswerValue = roll(dice, 6);
+    const rollQualifyValue = roll(dice, 6);
+
+    if (rollQualifyValue !== 1 && rollQualifyValue !== 6) {
+      return [_pickFormat(cmd, _isYes(rollAnswerValue) ? 'yes' : 'no', rollAnswerValue)];
+    }
+    if (rollQualifyValue === 1) {
+      return [_pickFormat(cmd, _isYes(rollAnswerValue) ? 'yes_but' : 'no_but', rollAnswerValue)];
+    }
+    if (rollQualifyValue === 6) {
+      return [_pickFormat(cmd, _isYes(rollAnswerValue) ? 'yes_and' : 'no_and', rollAnswerValue)];
+    }
+  };
 
   return {
     cmd,
@@ -72,13 +77,6 @@ const ApocalypseSceneAlterationCommand = (options) => {
   const _pickSceneComplication = ApocalypseSceneComplicationCommand(options).pick;
   const _pickRandomEvent = ApocalypseRandomEventCommand(options).pick;
   const _pickPacingMove = ApocalypsePacingMoveCommand(options).pick;
-
-  const _pickReturn = (keys) => {
-    return {
-      keys,
-      cmd,
-    };
-  };
 
   const pick = () => {
     const rollValue = roll(options.dice, 6);

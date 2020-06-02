@@ -12,16 +12,13 @@ const ApplicationFinder = (options) => {
   const _prdicateFindApp = (app) => (klass) => _isApp(app)(klass(options).appName);
   const _getApp = (app) => R.find(_prdicateFindApp(app), _applications);
 
-  const execute = (payload) => {
+  const getApp = (payload) => {
     const appClass = _getApp(payload.app, payload.command, payload.args);
-    if (!appClass) return;
-
-    const reply = appClass(options).execute(payload);
-    return R.merge(payload, { reply });
+    return appClass ? appClass(options) : null;
   };
 
   return {
-    execute,
+    getApp,
   };
 };
 
