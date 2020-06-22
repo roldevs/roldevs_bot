@@ -1,19 +1,23 @@
 'use strict';
 
 const R = require('ramda');
-const ApocalypseOracleValues = require('./values');
+const AOOracleValues = require('./values');
 
-const compact = R.reject(R.isNil);
-const roll =(dice, sides) => dice.roll({ dices: 1, sides })[0];
+const roll =(dice, sides) => dice.roll({dices: 1, sides})[0];
 
 const _pickFormat = R.curry((cmd, key, roll) => {
-  return { app: 'ao', cmd, key, roll };
+  return {app: 'ao', cmd, key, roll};
 });
 
-const ApocalypseBaseCommand = ({ cmd, diceValues }) => ({ dice }) => {
+const AOBaseCommand = ({cmd, diceValues}) => ({dice}) => {
   const pick = () => {
     const rollValue = roll(dice, diceValues);
-    return [_pickFormat(cmd, R.nth(rollValue - 1, ApocalypseOracleValues[cmd]), rollValue)]
+    return [
+      _pickFormat(
+          cmd,
+          R.nth(rollValue - 1, AOOracleValues[cmd]),
+          rollValue),
+    ];
   };
 
   return {
@@ -22,21 +26,29 @@ const ApocalypseBaseCommand = ({ cmd, diceValues }) => ({ dice }) => {
   };
 };
 
-const ApocalypseQuestionCommand = ({ cmd, minValue }) =>  ({ dice }) => {
+const AOQuestionCommand = ({cmd, minValue}) => ({dice}) => {
   const _isYes = (rollValue) => rollValue >= minValue;
 
-  const pick = () => {
+  const _pickValue = (yesKey, noKey) => {
     const rollAnswerValue = roll(dice, 6);
+    return _pickFormat(
+        cmd,
+        _isYes(rollAnswerValue) ? yesKey : noKey,
+        rollAnswerValue,
+    );
+  };
+
+  const pick = () => {
     const rollQualifyValue = roll(dice, 6);
 
     if (rollQualifyValue !== 1 && rollQualifyValue !== 6) {
-      return [_pickFormat(cmd, _isYes(rollAnswerValue) ? 'yes' : 'no', rollAnswerValue)];
+      return [_pickValue('yes', 'no')];
     }
     if (rollQualifyValue === 1) {
-      return [_pickFormat(cmd, _isYes(rollAnswerValue) ? 'yes_but' : 'no_but', rollAnswerValue)];
+      return [_pickValue('yes_but', 'no_but')];
     }
     if (rollQualifyValue === 6) {
-      return [_pickFormat(cmd, _isYes(rollAnswerValue) ? 'yes_and' : 'no_and', rollAnswerValue)];
+      return [_pickValue('yes_and', 'no_and')];
     }
   };
 
@@ -46,41 +58,60 @@ const ApocalypseQuestionCommand = ({ cmd, minValue }) =>  ({ dice }) => {
   };
 };
 
-const ApocalypseQuestionLikelyCommand = ApocalypseQuestionCommand({ cmd: 'ql', minValue: 3 });
-const ApocalypseQuestionNormalCommand = ApocalypseQuestionCommand({ cmd: 'qn', minValue: 4 });
-const ApocalypseQuestionUnlikelyCommand = ApocalypseQuestionCommand({ cmd: 'qu', minValue: 5 });
-const ApocalypseSceneComplicationCommand = ApocalypseBaseCommand({ cmd: 'sc', diceValues: 6 });
-const ApocalypsePacingMoveCommand = ApocalypseBaseCommand({ cmd: 'pm', diceValues: 6 });
-const ApocalypseSoftMoveCommand = ApocalypseBaseCommand({ cmd: 'sm', diceValues: 6 });
-const ApocalypseHardMoveCommand = ApocalypseBaseCommand({ cmd: 'hm', diceValues: 6 });
-const ApocalypseNPCMoveCommand = ApocalypseBaseCommand({ cmd: 'nm', diceValues: 6 });
-const ApocalypseActionQuestionCommand = ApocalypseBaseCommand({ cmd: 'aq', diceValues: 40 });
-const ApocalypseDescriptionQuestionCommand = ApocalypseBaseCommand({ cmd: 'dq', diceValues: 40 });
-const ApocalypseEventFocusCommand = ApocalypseBaseCommand({ cmd: 'ef', diceValues: 40 });
+const AOQuestionLikelyCommand = AOQuestionCommand({cmd: 'ql', minValue: 3});
+const AOQuestionNormalCommand = AOQuestionCommand({cmd: 'qn', minValue: 4});
+const AOQuestionUnlikelyCommand = AOQuestionCommand({cmd: 'qu', minValue: 5});
+const AOSceneComplicationCommand = AOBaseCommand({cmd: 'sc', diceValues: 6});
+const AOPacingMoveCommand = AOBaseCommand({cmd: 'pm', diceValues: 6});
+const AOSoftMoveCommand = AOBaseCommand({cmd: 'sm', diceValues: 6});
+const AOHardMoveCommand = AOBaseCommand({cmd: 'hm', diceValues: 6});
+const AONPCMoveCommand = AOBaseCommand({cmd: 'nm', diceValues: 6});
+const AOActionQuestionCommand = AOBaseCommand({cmd: 'aq', diceValues: 40});
+const AODescriptionQuestionCommand = AOBaseCommand({cmd: 'dq', diceValues: 40});
+const AOEventFocusCommand = AOBaseCommand({cmd: 'ef', diceValues: 40});
 
-const ApocalypseRandomEventCommand = (options) => {
-  const cmd = 're';
-  const _classes = [ApocalypseEventFocusCommand, ApocalypseActionQuestionCommand];
+// NPC
+const AOSocialPositionCommand = AOBaseCommand({cmd: 'sp', diceValues: 6});
+const AONotableFeaturesCommand = AOBaseCommand({cmd: 'nf', diceValues: 6});
+const AOAttitudeCommand = AOBaseCommand({cmd: 'at', diceValues: 6});
+const AOConversationFocusCommand = AOBaseCommand({cmd: 'cf', diceValues: 40});
+
+// PLOT
+const AOObjetiveCommand = AOBaseCommand({cmd: 'ob', diceValues: 6});
+const AOPlotFocusCommand = AOBaseCommand({cmd: 'pf', diceValues: 40});
+const AOAdversariesCommand = AOBaseCommand({cmd: 'ad', diceValues: 6});
+const AORewardsCommand = AOBaseCommand({cmd: 'rw', diceValues: 6});
+
+const AOClassesCommand = ({cmd, classes}) => (options) => {
   const _pickFromClass = (klass) => klass(options).pick();
-  const _pickFromClasses = (classes) => R.compose(R.flatten, R.map(_pickFromClass))(classes);
+  const _pickFromClasses = () => {
+    return R.compose(R.flatten, R.map(_pickFromClass))(classes);
+  };
 
-  const pick = () => _pickFromClasses(_classes);
+  const pick = () => _pickFromClasses();
 
   return {
     cmd,
-    pick
+    pick,
   };
 };
 
-const ApocalypseSceneAlterationCommand = (options) => {
+const AORandomEventCommand = AOClassesCommand({
+  cmd: 're',
+  classes: [AOEventFocusCommand, AOActionQuestionCommand],
+});
+
+const AOSceneAlterationCommand = (options) => {
   const cmd = 'sa';
-  const _pickSceneComplication = ApocalypseSceneComplicationCommand(options).pick;
-  const _pickRandomEvent = ApocalypseRandomEventCommand(options).pick;
-  const _pickPacingMove = ApocalypsePacingMoveCommand(options).pick;
+  const _pickSceneComplication = AOSceneComplicationCommand(options).pick;
+  const _pickRandomEvent = AORandomEventCommand(options).pick;
+  const _pickPacingMove = AOPacingMoveCommand(options).pick;
 
   const pick = () => {
     const rollValue = roll(options.dice, 6);
-    let result = [_pickFormat(cmd, R.nth(rollValue - 1, ApocalypseOracleValues.sa), rollValue)];
+    let result = [
+      _pickFormat(cmd, R.nth(rollValue - 1, AOOracleValues.sa), rollValue),
+    ];
     if (rollValue === 4) {
       result = R.concat(result, _pickSceneComplication());
     }
@@ -99,18 +130,48 @@ const ApocalypseSceneAlterationCommand = (options) => {
   };
 };
 
+const AONPCCommand = AOClassesCommand({
+  cmd: 'npc',
+  classes: [
+    AOSocialPositionCommand,
+    AONotableFeaturesCommand,
+    AOAttitudeCommand,
+    AOConversationFocusCommand,
+  ],
+});
+
+const AOPlotCommand = AOClassesCommand({
+  cmd: 'plot',
+  classes: [
+    AOObjetiveCommand,
+    AOPlotFocusCommand,
+    AOAdversariesCommand,
+    AORewardsCommand,
+  ],
+});
+
 module.exports = {
-  ApocalypseQuestionLikelyCommand,
-  ApocalypseQuestionNormalCommand,
-  ApocalypseQuestionUnlikelyCommand,
-  ApocalypseSceneComplicationCommand,
-  ApocalypseSceneAlterationCommand,
-  ApocalypsePacingMoveCommand,
-  ApocalypseSoftMoveCommand,
-  ApocalypseHardMoveCommand,
-  ApocalypseNPCMoveCommand,
-  ApocalypseActionQuestionCommand,
-  ApocalypseDescriptionQuestionCommand,
-  ApocalypseEventFocusCommand,
-  ApocalypseRandomEventCommand,
+  AOQuestionLikelyCommand,
+  AOQuestionNormalCommand,
+  AOQuestionUnlikelyCommand,
+  AOSceneComplicationCommand,
+  AOPacingMoveCommand,
+  AOSoftMoveCommand,
+  AOHardMoveCommand,
+  AONPCMoveCommand,
+  AOActionQuestionCommand,
+  AODescriptionQuestionCommand,
+  AOEventFocusCommand,
+  AORandomEventCommand,
+  AOSceneAlterationCommand,
+  AOSocialPositionCommand,
+  AONotableFeaturesCommand,
+  AOAttitudeCommand,
+  AOConversationFocusCommand,
+  AOObjetiveCommand,
+  AOPlotFocusCommand,
+  AOAdversariesCommand,
+  AORewardsCommand,
+  AONPCCommand,
+  AOPlotCommand,
 };

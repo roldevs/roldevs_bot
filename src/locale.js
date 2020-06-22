@@ -4,11 +4,9 @@ const R = require('ramda');
 
 const Locale = ({language, applicationFinder}) => {
   const translate = (payload) => {
-    return R.set(
-        R.lensProp('reply'),
-        applicationFinder.getApp(payload).translate(language, payload.reply),
-        payload,
-    );
+    const translator = applicationFinder.getApp(payload).translate(language);
+    const reply = translator(payload.reply);
+    return R.set(R.lensProp('reply'), reply, payload);
   };
 
   return {

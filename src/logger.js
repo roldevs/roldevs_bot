@@ -1,18 +1,17 @@
 'use strict';
 
+const R = require('ramda');
+
 const Logger = ({logger$}) => {
-  const info = (message) => logger$({
-    type: 'info',
+  const _log = R.curry((type, payload, message) => logger$({
+    payload,
+    type,
     message,
-  });
-  const debug = (message) => logger$({
-    type: 'debug',
-    message,
-  });
-  const error = (message) => logger$({
-    type: 'error',
-    message,
-  });
+  }));
+
+  const info = _log('info');
+  const debug = _log('debug');
+  const error = _log('error');
 
   return {
     info,

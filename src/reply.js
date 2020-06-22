@@ -9,9 +9,11 @@ const Reply = () => {
 
   const _replyer = (system) => _systemReply[system]();
   const reply = (options) => _replyer(options.system).reply(options);
+  const error = (options) => _replyer(options.payload.system).error(options);
 
   return {
     reply,
+    error,
   };
 };
 

@@ -1,6 +1,7 @@
 'use strict';
 
 const flyd = require('flyd');
+const R = require('ramda');
 const Discord = require('./src/discord');
 const Logger = require('./src/logger');
 const Broker = require('./src/broker');
@@ -10,36 +11,31 @@ const Dice = require('./src/dice');
 const Reply = require('./src/reply');
 const Locale = require('./src/locale');
 
-const applicationFinder = ApplicationFinder({dice: Dice()});
-const application = Application({applicationFinder});
-const locale = Locale({language: 'es', applicationFinder});
-
 require('dotenv').config();
 
 const broker$ = flyd.stream();
 const logger$ = flyd.stream();
 
-// flyd.on(console.log, broker$);
-// flyd.on(console.error, logger$);
+const _isLoggerType = (type) => R.compose(R.equals(type), R.prop('type'));
+const applicationFinder = ApplicationFinder({dice: Dice()});
+const locale = Locale({language: 'es', applicationFinder});
+const logger = Logger({logger$});
+const error$ = flyd.combine((logger, self) => {
+  if (_isLoggerType('error')(logger.val)) self(logger.val);
+}, [logger$]);
 
-const reply$ = flyd.combine((options) => {
-  application.execute(options());
-}, [broker$]);
+const reply$ = Application({applicationFinder, logger, broker$});
+
 const translation$ = flyd.combine((options) => {
-  locale.translate(options());
+  return locale.translate(options());
 }, [reply$]);
 
-flyd.on((options) => {
-  // console.log(options.reply);
-}, translation$);
-
 flyd.on(Reply().reply, translation$);
+flyd.on(Reply().error, error$);
 
-const discord = Discord({
-  logger: Logger({logger$}),
+Discord({
+  logger,
   broker: Broker({broker$}),
   prefix: process.env.DISCORD_PREFIX,
   token: process.env.DISCORD_TOKEN,
 });
-
-discord.init();

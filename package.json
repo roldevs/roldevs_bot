@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run lint && npm run mocha",
     "mocha": "node_modules/.bin/mocha 'specs/**/*.spec.js'",
-    "lint": "node_modules/.bin/eslint index.js src/*.js specs/*.js"
+    "lint": "node_modules/.bin/eslint ."
   },
   "repository": {
     "type": "git",
