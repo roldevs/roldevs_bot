@@ -5,11 +5,8 @@ const AOOracleValues = require('./values');
 
 const roll =(dice, sides) => dice.roll({dices: 1, sides})[0];
 
-const _pickFormat = R.curry((cmd, key, roll) => {
-  return {app: 'ao', cmd, key, roll};
-});
-
-const AOBaseCommand = ({cmd, diceValues}) => ({dice}) => {
+AOOracleValues
+const AORollCommand = ({cmd, diceValues}) => ({dice}) => {
   const pick = () => {
     const rollValue = roll(dice, diceValues);
     return [
@@ -72,7 +69,7 @@ const AOEventFocusCommand = AOBaseCommand({cmd: 'ef', diceValues: 40});
 
 // NPC
 const AOSocialPositionCommand = AOBaseCommand({cmd: 'sp', diceValues: 6});
-const AONotableFeaturesCommand = AOBaseCommand({cmd: 'nf', diceValues: 6});
+const AOAttitudeCommand = AOBaseCommand({cmd: 'nf', diceValues: 6});
 const AOAttitudeCommand = AOBaseCommand({cmd: 'at', diceValues: 6});
 const AOConversationFocusCommand = AOBaseCommand({cmd: 'cf', diceValues: 40});
 

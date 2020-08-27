@@ -3,6 +3,7 @@
 const flyd = require('flyd');
 const R = require('ramda');
 const Discord = require('./src/discord');
+const Loader = require('./src/loader/file');
 const Logger = require('./src/logger');
 const Broker = require('./src/broker');
 const ApplicationFinder = require('./src/apps/finder');
@@ -17,7 +18,7 @@ const broker$ = flyd.stream();
 const logger$ = flyd.stream();
 
 const _isLoggerType = (type) => R.compose(R.equals(type), R.prop('type'));
-const applicationFinder = ApplicationFinder({dice: Dice()});
+const applicationFinder = ApplicationFinder({dice: Dice(), loader: Loader()});
 const locale = Locale({language: 'es', applicationFinder});
 const logger = Logger({logger$});
 const error$ = flyd.combine((logger, self) => {

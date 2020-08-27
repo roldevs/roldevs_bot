@@ -2,10 +2,11 @@
 
 const R = require('ramda');
 
-const ApplicationBase = ({appName, commands, localeDefinitions}) =>
-  ({dice}) => {
+const Application = ({appName, localeDefinitions}) =>
+  ({dice, loader}) => {
     const _isApp = R.equals(appName);
     const _isCommand = (command) => R.equals(command);
+    const _commands = loader.load(`./src/apps/${appName}/commands/*.js`);
 
     const _predicateCommand = (command, args) =>
       (commandClass) => {
@@ -19,7 +20,7 @@ const ApplicationBase = ({appName, commands, localeDefinitions}) =>
     const _getCommand = ({app, command, args}) => {
       if (!_isApp(app)) return;
 
-      return _findCommand(command, args)(commands);
+      return _findCommand(command, args)(_commands);
     };
 
     const execute = (payload) => {
@@ -27,10 +28,7 @@ const ApplicationBase = ({appName, commands, localeDefinitions}) =>
       if (!commandClass) {
         return _list(payload);
       }
-
-      const context = commandClass({dice});
-
-      return context.pick();
+      return commandClass({dice, loader}).pick();
     };
 
     const _isList = R.compose(R.equals('ls'), R.prop('command'));
@@ -40,7 +38,7 @@ const ApplicationBase = ({appName, commands, localeDefinitions}) =>
 
       return R.map((cmdClass) => {
         return {app: 'ao', cmd: cmdClass({dice}).cmd, key: 'ls'};
-      }, commands);
+      }, _commands);
     };
 
     const _translateItem = (language) => (options) => {
@@ -61,4 +59,4 @@ const ApplicationBase = ({appName, commands, localeDefinitions}) =>
     };
   };
 
-module.exports = ApplicationBase;
+module.exports = Application;

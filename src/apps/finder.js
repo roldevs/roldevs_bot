@@ -1,21 +1,18 @@
 'use strict';
 
 const R = require('ramda');
-const ApocalypseOracleApp = require('./ao/application');
 
-const ApplicationFinder = (options) => {
-  const _applications = [
-    ApocalypseOracleApp,
-  ];
+const ApplicationFinder = ({dice, loader}) => {
+  const _applications = loader.load('./src/apps/*/application.js');
 
-  const _isApp = (app) => R.equals(app);
+  const _isApp = R.equals;
   const _prdicateFindApp = (app) =>
-    (klass) => _isApp(app)(klass(options).appName);
+    (klass) => _isApp(app)(klass({dice, loader}).appName);
   const _getApp = (app) => R.find(_prdicateFindApp(app), _applications);
 
   const getApp = (payload) => {
     const appClass = _getApp(payload.app, payload.command, payload.args);
-    return appClass ? appClass(options) : null;
+    return appClass ? appClass({dice, loader}) : null;
   };
 
   return {
