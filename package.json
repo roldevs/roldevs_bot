@@ -33,6 +33,7 @@
     "dotenv": "^8.2.0",
     "flyd": "^0.2.8",
     "ramda": "^0.27.1",
+    "shell-quote": "^1.7.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -42,7 +43,6 @@
     "eslint": "^6.8.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^8.1.2",
-    "shell-quote": "^1.7.2",
     "sinon": "^9.0.3"
   }
 }
