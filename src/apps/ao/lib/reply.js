@@ -3,8 +3,8 @@
 const Reply = require('../../reply');
 
 const AOReply = ({cmd}) => {
-  const reply = (key, rollValue) => [
-    Reply('ao').pickFormat({cmd, key, rollValue}),
+  const reply = (key, roll) => [
+    Reply('ao').pickFormat({cmd, key, roll}),
   ];
 
   return {

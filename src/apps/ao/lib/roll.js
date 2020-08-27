@@ -11,7 +11,7 @@ const AORollCommand = ({cmd, diceSides}) => ({dice}) => {
   const pick = () => {
     const rollValue = _roll();
     const key = R.nth(rollValue - 1, AOOracleValues[cmd]);
-    return _reply(key, rollValue);
+    return _reply.reply(key, rollValue);
   };
 
   return {

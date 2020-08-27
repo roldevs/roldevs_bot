@@ -5,28 +5,25 @@ const {expect} = require('chai');
 const sinon = require('sinon');
 const ApocalypseOracle = require('../../src/apps/ao/application');
 const ApocalypseOracleValues = require('../../src/apps/ao/values');
+const LoaderFile = require('../../src/loader/file');
 const TestDice = require('../test_dice');
 
 const eachIndexed = R.addIndex(R.forEach);
-const locale = () => {
-  return {
-    t: () => () => null,
-  };
-};
 const language = 'es';
+const loader = LoaderFile();
 
 describe('ApocalypseOracle', () => {
   describe('with wrong app', () => {
     it('returns undefined', () => {
       const dice = TestDice({value: 1});
-      const AO = ApocalypseOracle({dice, locale});
+      const AO = ApocalypseOracle({dice, loader});
       expect(AO.execute('bb', 'sc')).to.be.undefined;
     });
   });
   describe('with wrong command', () => {
     it('returns undefined', () => {
       const dice = TestDice({value: 1});
-      const AO = ApocalypseOracle({dice, locale});
+      const AO = ApocalypseOracle({dice, loader});
       expect(AO.execute('ao', 'xx')).to.be.undefined;
     });
   });
@@ -47,7 +44,7 @@ describe('ApocalypseOracle', () => {
     }];
 
     const dice = TestDice({value: 1});
-    const AO = ApocalypseOracle({dice, locale});
+    const AO = ApocalypseOracle({dice, loader});
     const sandbox = sinon.createSandbox();
     const getQualifier = (index) => {
       return index === 0 ? 'no_but' : index === 5 ? 'no_and' : 'no';
@@ -109,7 +106,7 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         const subject = AO.execute({app: 'ao', command: 'sc'});
         expect(subject).to.eql([{
           app: 'ao',
@@ -120,7 +117,7 @@ describe('ApocalypseOracle', () => {
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'sc',
@@ -134,7 +131,7 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         const subject = AO.execute({app: 'ao', command: 'sa'});
         expect(subject[0]).to.eql({
           app: 'ao',
@@ -145,7 +142,7 @@ describe('ApocalypseOracle', () => {
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'sa',
@@ -162,12 +159,13 @@ describe('ApocalypseOracle', () => {
         stub.onCall(1).returns([1]);
       });
       it('returns an scene complication', () => {
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         const subject = AO.execute({app: 'ao', command: 'sa'});
-        expect(subject).to.eql([
+        const expected = [
           {app: 'ao', cmd: 'sa', key: ApocalypseOracleValues.sa[3], roll: 4},
           {app: 'ao', cmd: 'sc', key: ApocalypseOracleValues.sc[0], roll: 1},
-        ]);
+        ];
+        expect(subject).to.eql(expected);
       });
     });
 
@@ -180,7 +178,7 @@ describe('ApocalypseOracle', () => {
         stub.onCall(2).returns([1]);
       });
       it('returns an random event', () => {
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         const subject = AO.execute({app: 'ao', command: 'sa'});
         expect(subject).to.eql([
           {app: 'ao', cmd: 'sa', key: ApocalypseOracleValues.sa[4], roll: 5},
@@ -198,7 +196,7 @@ describe('ApocalypseOracle', () => {
         stub.onCall(1).returns([1]);
       });
       it('returns a pacing move', () => {
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         const subject = AO.execute({app: 'ao', command: 'sa'});
         expect(subject).to.eql([
           {app: 'ao', cmd: 'sa', key: ApocalypseOracleValues.sa[5], roll: 6},
@@ -211,14 +209,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'aq'})).to.eql([
           {app: 'ao', cmd: 'aq', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'aq',
@@ -231,14 +229,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'pm'})).to.eql([
           {app: 'ao', cmd: 'pm', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'pm',
@@ -251,14 +249,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'sm'})).to.eql([
           {app: 'ao', cmd: 'sm', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'sm',
@@ -271,14 +269,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'hm'})).to.eql([
           {app: 'ao', cmd: 'hm', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'hm',
@@ -291,14 +289,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'nm'})).to.eql([
           {app: 'ao', cmd: 'nm', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'nm',
@@ -311,14 +309,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'dq'})).to.eql([
           {app: 'ao', cmd: 'dq', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'dq',
@@ -331,14 +329,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'ef'})).to.eql([
           {app: 'ao', cmd: 'ef', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'ef',
@@ -364,7 +362,7 @@ describe('ApocalypseOracle', () => {
           afterEach(() => sandbox.restore());
 
           it(`returns ${efValue}, ${aqValue}`, () => {
-            const AO = ApocalypseOracle({dice, locale});
+            const AO = ApocalypseOracle({dice, loader});
             const subject = AO.execute({app: 'ao', command: 're'});
             expect(subject).to.eql([
               {app: 'ao', cmd: 'ef', key: efValue, roll: efIndex + 1},
@@ -380,14 +378,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'sp'})).to.eql([
           {app: 'ao', cmd: 'sp', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'sp',
@@ -401,14 +399,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'nf'})).to.eql([
           {app: 'ao', cmd: 'nf', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'nf',
@@ -422,14 +420,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'at'})).to.eql([
           {app: 'ao', cmd: 'at', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'at',
@@ -443,14 +441,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'cf'})).to.eql([
           {app: 'ao', cmd: 'cf', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'cf',
@@ -464,14 +462,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'ob'})).to.eql([
           {app: 'ao', cmd: 'ob', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'ob',
@@ -485,14 +483,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'pf'})).to.eql([
           {app: 'ao', cmd: 'pf', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'pf',
@@ -506,14 +504,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'ad'})).to.eql([
           {app: 'ao', cmd: 'ad', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'ad',
@@ -527,14 +525,14 @@ describe('ApocalypseOracle', () => {
     eachIndexed((value, index) => {
       it(`with ${index + 1} returns ${value}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.execute({app: 'ao', command: 'rw'})).to.eql([
           {app: 'ao', cmd: 'rw', key: value, roll: index + 1},
         ]);
       });
       it(`translates: ${value} to ${language}`, () => {
         const dice = TestDice({value: [index + 1]});
-        const AO = ApocalypseOracle({dice, locale});
+        const AO = ApocalypseOracle({dice, loader});
         expect(AO.translate(language, [{
           app: 'ao',
           cmd: 'rw',

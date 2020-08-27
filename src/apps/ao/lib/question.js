@@ -14,7 +14,7 @@ const AOQuestionCommand = ({cmd, minValue}) => ({dice}) => {
   const _pickValue = (yesKey, noKey) => () => {
     const rollValue = _roll(6);
     const key = _isYes(rollValue) ? yesKey : noKey;
-    return _reply(key, rollValue);
+    return _reply.reply(key, rollValue);
   };
 
   const pick = () => {

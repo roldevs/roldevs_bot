@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && npm run mocha",
-    "mocha": "node_modules/.bin/mocha 'specs/**/*.spec.js'",
+    "mocha": "node_modules/.bin/mocha",
     "lint": "node_modules/.bin/eslint ."
   },
   "repository": {
@@ -35,6 +35,8 @@
     "winston": "^3.3.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/register": "^7.10.5",
     "chai": "^4.2.0",
     "eslint": "^7.7.0",
     "eslint-config-google": "^0.14.0",

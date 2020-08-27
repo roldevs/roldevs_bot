@@ -10,7 +10,7 @@ const Application = ({appName, localeDefinitions}) =>
 
     const _predicateCommand = (command, args) =>
       (commandClass) => {
-        const klass = commandClass({dice, args});
+        const klass = commandClass({dice, loader});
         return _isCommand(command)(klass.cmd);
       };
     const _findCommand = (command, args) => {

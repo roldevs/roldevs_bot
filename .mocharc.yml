@@ -1,0 +1,3 @@
+# This is an example Mocha config containing every Mocha option plus others
+require: '@babel/register'
+spec: 'specs/**/*.spec.js'

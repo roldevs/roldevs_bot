@@ -3,4 +3,4 @@
 const AORollCommand = require('../lib/roll');
 
 // NPC
-module.exports = AORollCommand({cmd: 'sp', diceValues: 6});
+module.exports = AORollCommand({cmd: 'sp', diceSides: 6});

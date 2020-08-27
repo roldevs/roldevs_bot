@@ -2,4 +2,4 @@
 
 const AORollCommand = require('../lib/roll');
 
-module.exports = AORollCommand({cmd: 'aq', diceValues: 40});
+module.exports = AORollCommand({cmd: 'aq', diceSides: 40});

@@ -1,6 +1,6 @@
 'use strict';
 
-const AORollCommand = require('../lib/base');
+const AORollCommand = require('../lib/roll');
 
 // PLOT
-module.exports = AORollCommand({cmd: 'ob', diceValues: 6});
+module.exports = AORollCommand({cmd: 'ob', diceSides: 6});

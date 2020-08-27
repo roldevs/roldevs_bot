@@ -6,9 +6,9 @@ const AOOracleValues = require('./values');
 const roll =(dice, sides) => dice.roll({dices: 1, sides})[0];
 
 AOOracleValues
-const AORollCommand = ({cmd, diceValues}) => ({dice}) => {
+const AORollCommand = ({cmd, diceSides}) => ({dice}) => {
   const pick = () => {
-    const rollValue = roll(dice, diceValues);
+    const rollValue = roll(dice, diceSides);
     return [
       _pickFormat(
           cmd,
