@@ -11,6 +11,7 @@ const Application = require('../src/application');
 const Dice = require('../src/dice');
 const Reply = require('../src/reply');
 const Locale = require('../src/locale');
+const WinstonLogger = require('../src/winston');
 
 const DiscordServer = () => {
   const broker$ = flyd.stream();
@@ -41,6 +42,7 @@ const DiscordServer = () => {
   }, [reply$]);
 
   const run = ({prefix, token}) => {
+    WinstonLogger({logger$});
     flyd.on(Reply().reply, translation$);
     flyd.on(Reply().error, error$);
 

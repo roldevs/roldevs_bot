@@ -1,1 +1,1 @@
-web: npm run discord
+discord: npm run discord
