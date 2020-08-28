@@ -27,31 +27,31 @@ Actualmente esta es la única aplicación desarrollada en el bot. Su código es 
 
 Si se ejecuta el siguiente comando: `+ao ls` se obtiene una lista con todos los comandos disponibles en la aplicación:
 
-Descripción | comando
---- | --- | ---
-Adversaries|`ao ad​`
-Pregunta de Acción|`ao aq​`
-Attitude|`ao at​`
-Conversation Focus|`ao cf​`
-Pregunta de Descripción|`ao dq​`
-Foco del evento|`ao ef​`
-Movimiento Duro|`ao hm​`
-Notable Feature|`ao nf​`
-Movimiento de PNJ o de Enemigo|`ao nm​`
-PNJ|`ao npc​`
-Objective|`ao ob​`
-Plot Focus|`ao pf​`
-Plot|`ao plot​`
-Movimiento de Estimulación|`ao pm​`
-Pregunta probable|`ao ql​`
-Pregunta normal|`ao qn​`
-Pregunta improbable|`ao qu​`
-Evento aleatorio|`ao re​`
-Rewards|`ao rw​`
-Escena Alterada|`ao sa​`
-Complicación de Escena|`ao sc​`
-Movimiento Blando|`ao sm​`
-Social Position|`ao sp​`
+| Descripción | comando
+| ----------- | -------
+| Adversaries | `ao ad​`
+| Pregunta de Acción | `ao aq​`
+| Attitude | `ao at​`
+| Conversation Focus | `ao cf​`
+| Pregunta de Descripción | `ao dq​`
+| Foco del evento | `ao ef​`
+| Movimiento Duro | `ao hm​`
+| Notable Feature | `ao nf​`
+| Movimiento de PNJ o de Enemigo | `ao nm​`
+| PNJ | `ao npc​`
+| Objective | `ao ob​`
+| Plot Focus | `ao pf​`
+| Plot | `ao plot​`
+| Movimiento de Estimulación | `ao pm​`
+| Pregunta probable | `ao ql​`
+| Pregunta normal | `ao qn​`
+| Pregunta improbable | `ao qu​`
+| Evento aleatorio | `ao re​`
+| Rewards | `ao rw​`
+| Escena Alterada | `ao sa​`
+| Complicación de Escena | `ao sc​`
+| Movimiento Blando | `ao sm​`
+| Social Position | `ao sp​`
 
 De esta manera se podría obtener una propuesta de trama con el siguiente comando:
 
