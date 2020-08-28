@@ -41,8 +41,8 @@ const DiscordServer = () => {
     return _locale.translate(options());
   }, [reply$]);
 
-  const run = ({prefix, token}) => {
-    WinstonLogger({logger$});
+  const run = ({prefix, token, environment}) => {
+    WinstonLogger({logger$, environment});
     flyd.on(Reply().reply, translation$);
     flyd.on(Reply().error, error$);
 
