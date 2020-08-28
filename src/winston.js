@@ -34,7 +34,6 @@ const WinstonLogger = ({logger$, environment}) => {
     });
 
     return winston.createLogger({
-      format: combine(timestamp(), myFormat),
       transports: [_winstonPapertrail],
       exceptionHandlers: [_winstonPapertrail],
     });
