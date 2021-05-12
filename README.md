@@ -10,6 +10,23 @@ Se puede instalar este bot en cualquiera de nuestros canales de Discord, haciend
 
 [Añadir bot a Discord](https://discordapp.com/oauth2/authorize?&client_id=713711004764340335&scope=bot&permissions=71680)
 
+# Arranque local
+
+Tambien se puede arrancar en local configurando un archivo de entorno (_.env_) en el raiz del proyecto con el siguiente contenido:
+
+```
+DISCORD_CLIENT_ID=
+DISCORD_TOKEN=
+DISCORD_PREFIX=+
+TELEGRAM_TOKEN=
+LOCALE=es
+ENVIRONMENT=
+```
+
+`DISCORD_CLIENT_ID`, `DISCORD_TOKEN` y `DISCORD_PREFIX` pueden ser configurados con los datos del bot de Discord
+`TELEGRAM_TOKEN` si se quiere usar como un bot de Telegram
+`ENVIRONMENT` puede ser: _development_ o _environment_
+
 # Uso
 
 Para ejecutar un comando del bot, dentro de Discord, se debe seguir el siguiente formato:
