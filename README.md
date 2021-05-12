@@ -27,6 +27,10 @@ ENVIRONMENT=
 `TELEGRAM_TOKEN` si se quiere usar como un bot de Telegram
 `ENVIRONMENT` puede ser: _development_ o _environment_
 
+Y, por último, ejecutar:
+
+`npm run discord`
+
 # Uso
 
 Para ejecutar un comando del bot, dentro de Discord, se debe seguir el siguiente formato:
@@ -40,7 +44,7 @@ Para ejecutar un comando del bot, dentro de Discord, se debe seguir el siguiente
 
 ## Apocalypse Oracle
 
-Actualmente esta es la única aplicación desarrollada en el bot. Su código es `ao`
+Su código es `ao`
 
 Si se ejecuta el siguiente comando: `+ao ls` se obtiene una lista con todos los comandos disponibles en la aplicación:
 
@@ -78,7 +82,39 @@ O preguntar al oraculo por una pregunta probable:
 
 `+ao ql 'Voy a generar una historia épica?'`
 
+## Cuento de Ánimas
 
+Se puede utilizar el bot para generar cartas para jugar al juego: 'Cuento de Ánimas'.
 
+Para obtener una carta nueva solo hay que ejecutar el siguiente comando:
+
+`+ca pc`
+
+El bot devolverá algo por el estilo (_bot-name_ es el nombre que se le ha dado al instalar el bot en Discord, por lo que puede ser distinto en otros servidores de Discord):
+
+```
+bot-name: +ca pc p
+Obtener Carta: Pista​
+```
+
+Dado que el bot no guarda las cartas que han salido previemante, hay que pasarle la lista anterior para que las excluya (el siguiente comando excluye una pista: _p_).
+
+`+ca pc p`
+
+```
+bot-name: +ca pc p,o7
+Obtener Carta: Obstáculo de personaje, 7​
+```
+
+Date cuenta que lo que hay a continuación de _bot-name:_ es lo que tienes que lanzar para pedir la siguiente carta:
+
+`+ca pc p,o7`
+
+```
+bot-name: +ca pc p,o7,r
+Obtener Carta: Percance de personaje​
+```
+
+Y así sucesivamente hasta acabar la partida...
 
 
