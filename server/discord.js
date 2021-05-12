@@ -42,9 +42,11 @@ const DiscordServer = () => {
   }, [reply$]);
 
   const run = ({prefix, token, environment}) => {
+    const reply = Reply({applicationFinder: _applicationFinder});
+
     WinstonLogger({logger$, environment});
-    flyd.on(Reply().reply, translation$);
-    flyd.on(Reply().error, error$);
+    flyd.on(reply.reply, translation$);
+    flyd.on(reply.error, error$);
 
     Discord({
       logger: _logger,

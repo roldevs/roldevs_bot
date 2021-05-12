@@ -2,7 +2,7 @@
 
 const R = require('ramda');
 
-const Application = ({appName, localeDefinitions}) =>
+const Application = ({appName, localeDefinitions, repliers}) =>
   ({dice, loader}) => {
     const _isApp = R.equals(appName);
     const _isCommand = (command) => R.equals(command);
@@ -10,7 +10,7 @@ const Application = ({appName, localeDefinitions}) =>
 
     const _predicateCommand = (command, args) =>
       (commandClass) => {
-        const klass = commandClass({dice, loader});
+        const klass = commandClass({dice, loader, args});
         return _isCommand(command)(klass.cmd);
       };
     const _findCommand = (command, args) => {
@@ -28,7 +28,7 @@ const Application = ({appName, localeDefinitions}) =>
       if (!commandClass) {
         return _list(payload);
       }
-      return commandClass({dice, loader}).pick();
+      return commandClass({dice, loader, args: payload.args}).pick();
     };
 
     const _isList = R.compose(R.equals('ls'), R.prop('command'));
@@ -37,7 +37,7 @@ const Application = ({appName, localeDefinitions}) =>
       if (!_isList(payload)) return;
 
       return R.map((cmdClass) => {
-        return {app: 'ao', cmd: cmdClass({dice}).cmd, key: 'ls'};
+        return {app: payload.app, cmd: cmdClass({dice}).cmd, key: 'ls'};
       }, _commands);
     };
 
@@ -56,6 +56,7 @@ const Application = ({appName, localeDefinitions}) =>
       translate,
       execute,
       appName,
+      repliers,
     };
   };
 

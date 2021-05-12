@@ -1,14 +1,9 @@
 'use strict';
 
-const DiscordReply = require('./discord/reply');
-
-const Reply = () => {
-  const _systemReply = {
-    discord: DiscordReply,
-  };
-
-  const _replyer = (system) => _systemReply[system]();
-  const reply = (options) => _replyer(options.system).reply(options);
+const Reply = ({applicationFinder}) => {
+  const _replyer = (options) =>
+    applicationFinder.getApp(options).repliers[options.system]();
+  const reply = (options) => _replyer(options).reply(options);
   const error = (options) => _replyer(options.payload.system).error(options);
 
   return {
