@@ -29,22 +29,22 @@
   "homepage": "https://github.com/roldevs/roldevs_bot#readme",
   "dependencies": {
     "bluebird": "^3.7.2",
-    "discord.js": "^12.3.1",
-    "dotenv": "^8.2.0",
+    "discord.js": "^12.5.3",
+    "dotenv": "^9.0.2",
     "flyd": "^0.2.8",
-    "glob": "^7.1.6",
+    "glob": "^7.1.7",
     "ramda": "^0.27.1",
     "shell-quote": "^1.7.2",
     "winston": "^3.3.3",
     "winston-papertrail": "^1.0.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.4",
-    "@babel/register": "^7.10.5",
-    "chai": "^4.2.0",
-    "eslint": "^6.8.0",
+    "@babel/core": "^7.14.0",
+    "@babel/register": "^7.13.16",
+    "chai": "^4.3.4",
+    "eslint": "^7.26.0",
     "eslint-config-google": "^0.14.0",
-    "mocha": "^8.1.2",
-    "sinon": "^9.0.3"
+    "mocha": "^8.4.0",
+    "sinon": "^10.0.0"
   }
 }
